@@ -1,4 +1,6 @@
-file_name = '8.html'
+file_name = '8 - Анализ списка слов заданной длины.html'
+first_n_tasks = 100
+cat = 'ЕГЭ/8/Анализ списка слов заданной длины'
 
 qs = []
 
@@ -24,13 +26,9 @@ while i1 > 0:
     q1['valid_answer'] = f[ast:ae]
     qs.append(q1)
 
-    print(q1)
+    # print(q1)
 
     i1 = f.find('topicview', ae + 1)
-
-
-
-cat = 'test'
 
 moodle = open('moodle.xml', mode='w')
 moodle.write('<?xml version="1.0" ?><quiz>\n')
@@ -40,18 +38,28 @@ moodle.write('''
             <text>$course$/''' + cat + '''</text>
         </category>
     </question>''')
-for i, q in enumerate(qs):
-    qname = cat + '-' + str(i)
+for i, q in enumerate(qs[:min(len(qs), first_n_tasks)]):
+    qname = cat.replace('/', ' ') + ' ' + str(i)
+    stared = ''
+    if q['stared']:
+        stared = 'Со звездочкой'
+    else:
+        stared = 'Базовая'
     moodle.write('''
     <question type="shortanswer">
-        <tag>
-            <text>NetTest</text>
-        </tag>
+        <tags>
+            <tag>
+                <text>Поляков</text>
+            </tag>
+            <tag>
+                <text>''' + stared + '''</text>
+            </tag>
+        </tags>
         <name>
             <text>''' + qname + '''</text>
         </name>
         <questiontext format="html">
-            <text>''' + qs[i]['text'] + '''</text>
+            <text><![CDATA[''' + qs[i]['text'] + ''']]></text>
         </questiontext>
         <answer fraction="100">
             <text>''' + qs[i]['valid_answer'] + '''</text>
